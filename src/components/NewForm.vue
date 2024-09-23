@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import axios from "axios"; // Importa axios
+
 export default {
   data() {
     return {
@@ -69,10 +71,18 @@ export default {
     },
     submitForm() {
       let config = this.configHeader();
-      const url = `${self.URL_API}api/v1/seguimientocrm`;
+      const url = `${this.URL_API}api/v1/seguimientocrm`; // Corrige el uso de this
       console.log(this.form);
-      axios.post(url, form, config);
-      alert("Formulario enviado");
+      axios
+        .post(url, this.form, config) // Corrige el acceso al objeto form
+        .then((response) => {
+          console.log(response.data);
+          alert("Formulario enviado con éxito");
+        })
+        .catch((error) => {
+          console.error("Error al enviar el formulario", error);
+          alert("Hubo un error al enviar el formulario");
+        });
     },
   },
 };
