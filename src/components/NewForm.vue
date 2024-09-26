@@ -63,31 +63,37 @@
               @getPaises="getPaises"
               eventoCampo="getPaises"
               nombreItem="nom_pai"
-              :consulta="form.pai_exp_name"
+              :consulta="pai_exp_name"
               :registros="paises"
               :index="1"
               placeholder="Seleccione una opción"
             />
     </div>
     <div class="col">
-      <label class ="form-label" for="documento">Departamento de expedicion</label class ="form-label">
-      <input class="form-control"
-        type="text"
-        v-model="form.dpt_exp"
-        id="documento"
-        required
-      />
+        <SearchList
+              nombreCampo="Departamento de expedicion: *"
+              @selectDepartamento="selectDepartamento"
+              eventoCampo="selectDepartamento"
+              nombreItem="nom_dep"  
+              :consulta="dep_exp_name"
+              :registros="consulta_departamentos[1]"
+              :index="1"
+              placeholder="Seleccione una opción"
+            />
     </div>
    </div>
   <div class="row">
     <div class="col">
-      <label class ="form-label" for="documento">Ciudad de expedicion</label class ="form-label">
-      <input class  ="form-control"
-        type="text"
-        v-model="form.ciu_exp"
-        id="documento"
-        required
-      />
+      <SearchList
+              nombreCampo="Ciudad de expedicion: *"
+              @selectCiudad="selectCiudad"
+              eventoCampo="selectCiudad"
+              nombreItem="nom_ciu"  
+              :consulta="ciu_exp_name"
+              :registros="consulta_ciudades[1]"
+              :index="1"
+              placeholder="Seleccione una opción"
+            />
     </div>
     <div class="col">
         <SearchList
@@ -95,7 +101,7 @@
               @getPaises="getPaises"
               eventoCampo="getPaises"
               nombreItem="nom_pai"
-              :consulta="form.cod_pai_name"
+              :consulta="cod_pai_name"
               :registros="paises"
               :index="2"
               placeholder="Seleccione una opción"
@@ -104,22 +110,28 @@
   </div>
     <div class="row">
       <div class="col">
-      <label class ="form-label" for="documento">Departamento de nacimiento</label class ="form-label">
-      <input class="form-control"
-        type="text"
-        v-model="form.cod_dep"
-        id="documento"
-        required
-      />
+        <SearchList
+              nombreCampo="Departamento de nacimiento: *"
+              @selectDepartamento="selectDepartamento"
+              eventoCampo="selectDepartamento"
+              nombreItem="nom_dep"  
+              :consulta="cod_ciu_name"
+              :registros="consulta_departamentos[2]"
+              :index="2"
+              placeholder="Seleccione una opción"
+            />
     </div>
     <div class="col">
-      <label class ="form-label" for="documento">Ciudad de nacimiento</label class ="form-label">
-      <input class="form-control"
-        type="text"
-        v-model="form.cod_ciu"
-        id="documento"
-        required
-      />
+      <SearchList
+              nombreCampo="Ciudad de nacimiento: *"
+              @selectCiudad="selectCiudad"
+              eventoCampo="selectCiudad"
+              nombreItem="nom_ciu"  
+              :consulta="cod_ciu_name"
+              :registros="consulta_ciudades[2]"
+              :index="2"
+              placeholder="Seleccione una opción"
+            />
     </div>
     </div>
    <div class ="row">
@@ -174,31 +186,37 @@
               @getPaises="getPaises"
               eventoCampo="getPaises"
               nombreItem="nom_pai"
-              :consulta="form.pai_res_name"
+              :consulta="pai_res_name"
               :index="3"
               :registros="paises"
               placeholder="Seleccione una opción"
             />
     </div>
     <div class="col">
-      <label class ="form-label" for="documento">Departamento de residencia</label class ="form-label">
-      <input class="form-control"
-        type="text"
-        v-model="form.dpt_res"
-        id="documento"
-        required
-      />
+      <SearchList
+              nombreCampo="Departamento de residencia: *"
+              @selectDepartamento="selectDepartamento"
+              eventoCampo="selectDepartamento"
+              nombreItem="nom_dep"  
+              :consulta="dep_res_name"
+              :registros="consulta_departamentos[3]"
+              :index="3"
+              placeholder="Seleccione una opción"
+            />
     </div>
    </div>
     <div class="row">
       <div class="col">
-      <label class ="form-label" for="documento">Ciudad de residencia</label class ="form-label">
-      <input class="form-control"
-        type="text"
-        v-model="form.ciu_res"
-        id="documento"
-        required
-      />
+        <SearchList
+              nombreCampo="Ciudad de residencia: *"
+              @selectCiudad="selectCiudad"
+              eventoCampo="selectCiudad"
+              nombreItem="nom_ciu"  
+              :consulta="ciu_res_name"
+              :registros="consulta_ciudades[3]"
+              :index="3"
+              placeholder="Seleccione una opción"
+            />
     </div>
     <div class="col">
       <label class ="form-label" for="documento">Banco</label class ="form-label">
@@ -389,10 +407,18 @@ export default {
     SearchList},
   data() {
     return {
-      paises:"",
+      dep_res_name:"",
+      dep_exp_name:"",
+      cod_dep_name:"",
+      paises:[],
       pai_exp_name:"",
       cod_pai_name:"",
       pai_res_name:"",
+      consulta_departamentos:{},
+      consulta_ciudades:{},
+      ciu_exp_name:"",
+      cod_ciu_name:"",
+      ciu_res_name:"",
       URL_API:"http://localhost:8080/aplicaciones/api/public/",
       form: {
         nom_emp:"",
@@ -433,20 +459,80 @@ export default {
     };
   },
   methods: {
+    selectCiudad(item = null, index = null){
+      if (item != null) {
+        switch (index) {
+          case 1:
+            this.form.ciu_exp = item.cod_ciu;
+            this.ciu_exp_name= item.nom_ciu;
+         
+            break;
+          case 2:
+            this.form.cod_ciu = item.cod_ciu;
+            this.cod_ciu_name = item.nom_ciu;
+            
+            break;
+          case 3:
+          this.form.ciu_res = item.cod_ciu;
+          this.ciu_res_name = item.nom_ciu;
+
+            break;}}
+    },
+    selectDepartamento(item = null, index = null){
+      if (item != null) {
+        switch (index) {
+          case 1:
+            this.form.dpt_exp = item.cod_dep;
+            this.dep_exp_name= item.nom_dep;
+            this.getCiudades(item, index)
+            break;
+          case 2:
+            this.form.cod_dep = item.cod_dep;
+            this.cod_dep_name = item.nom_dep;
+            this.getCiudades(item, index)
+            break;
+          case 3:
+          this.form.dpt_res = item.cod_dep;
+          this.dep_res_name = item.nom_dep;
+          this.getCiudades(item, index)
+            break;
+        }}},
+    getCiudades(item, index){
+      let self = this;
+      console.log(index)
+      axios
+        .get(self.URL_API + "api/v1/ciudadesFormularioEmpleado/" + item.cod_pai +"/" + item.cod_dep)
+        .then(function (result) {
+          self.consulta_ciudades[index]= result.data;
+        });
+    },
+    getDepartamentos(item, index) {
+      let self = this;
+      console.log(index)
+      axios
+        .get(self.URL_API + "api/v1/departamentosFormularioEmpleado/" + item.cod_pai)
+        .then(function (result) {
+          self.consulta_departamentos[index]= result.data;
+        });
+    },
     getPaises(item = null, index = null) {
+     
       if (item != null) {
         switch (index) {
           case 1:
             this.form.pai_exp = item.cod_pai;
             this.pai_exp_name= item.nom_pai
+            this.getDepartamentos(item, index)
             break;
           case 2:
             this.form.cod_pai = item.cod_pai;
             this.cod_pai_name = item.nom_pai;
+            this.getDepartamentos(item, index)
             break;
           case 3:
           this.form.pai_res = item.cod_pai;
           this.pai_res_name = item.nom_pai;
+          this.getDepartamentos(item, index)
             break;
         }
       }
