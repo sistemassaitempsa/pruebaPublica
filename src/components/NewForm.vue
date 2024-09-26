@@ -262,12 +262,12 @@
     </div>
     <div class="col">
       <label class ="form-label" for="documento">Identidad de género</label class ="form-label">
-      <input class="form-control"
-        type="text"
-        v-model="form.sex_emp"
-        id="documento"
-        required
-      />
+        <select  class= "form-select"name="" id="" v-model="form.sex_emp" required>
+          <option value="1">Mujer</option>
+          <option value="2">Hombre</option>
+          <option value="0">Otro</option>
+        </select>
+     
     </div>
     </div>
     <div class="row">
@@ -282,18 +282,21 @@
     </div>
     <div class="col">
       <label class ="form-label" for="documento">Grupo sanguíneo</label class ="form-label">
-      <input class="form-control"
-        type="text"
-        v-model="form.gru_san"
-        id="documento"
-        required
-      />
+        <select class="form-select" name="" id="" v-model="form.gru_san" required>
+          <option value="A">A</option>
+          <option value="AB">AB</option>
+          <option value="B">B</option>
+          <option value="O">O</option>
+        </select>
     </div>
     </div>
     <div class="row">
       <div class="col">
       <label class ="form-label" for="documento">Factor RH</label class ="form-label">
-      <input class="form-control" type="text" v-model="form.fac_rhh" id="documento" required />
+        <select name="" id="" class="form-select" v-model="form.fac_rhh" required>
+          <option value="+">+</option>
+          <option value="-">-</option>
+        </select>
     </div>
     <div class="col">
       <label class ="form-label" for="documento">Grupo etnico</label class ="form-label">
