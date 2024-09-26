@@ -47,8 +47,15 @@
     </div>
     <div class="row">
       <div class="col">
-      <label class ="form-label" for="telefono">Tipo de documento:*</label class ="form-label">
-      <input class="form-control" type="tel" v-model="form.tip_ide" id="telefono" required />
+        <SearchList
+              nombreCampo="Tipo de documento: *"
+              @selectTipoId="selectTipoId"
+              eventoCampo="selectTipoId"
+              nombreItem="des_tip"  
+              :consulta="nom_tip_doc"
+              :registros="consulta_tipo_id"
+              placeholder="Seleccione una opción"
+            />
     </div>
 
     <div class="col">
@@ -407,6 +414,8 @@ export default {
     SearchList},
   data() {
     return {
+      consulta_tipo_id:[],
+      nom_tip_doc:"",
       dep_res_name:"",
       dep_exp_name:"",
       cod_dep_name:"",
@@ -459,6 +468,15 @@ export default {
     };
   },
   methods: {
+    selectTipoId(item){
+      let self = this;
+        axios
+          .get(self.URL_API + "api/v1/tipoIdFormularioEmpleado")
+          .then(function (result) {
+            self.consulta_tipo_id = result.data;
+            self.form.tip_ide=item.cod_tip
+          });
+    },
     selectCiudad(item = null, index = null){
       if (item != null) {
         switch (index) {
