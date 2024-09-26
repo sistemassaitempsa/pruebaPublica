@@ -63,10 +63,9 @@
               @getPaises="getPaises"
               eventoCampo="getPaises"
               nombreItem="nom_pai"
-              :consulta="form.pai_exp"
+              :consulta="form.pai_exp_name"
               :registros="paises"
-              :ordenCampo="1"
-              @getDepartamentos="getDepartamentos"
+              :index="1"
               placeholder="Seleccione una opción"
             />
     </div>
@@ -96,10 +95,9 @@
               @getPaises="getPaises"
               eventoCampo="getPaises"
               nombreItem="nom_pai"
-              :consulta="form.cod_pai"
+              :consulta="form.cod_pai_name"
               :registros="paises"
-              :ordenCampo="1"
-              @getDepartamentos="getDepartamentos"
+              :index="2"
               placeholder="Seleccione una opción"
             />
     </div>
@@ -176,10 +174,9 @@
               @getPaises="getPaises"
               eventoCampo="getPaises"
               nombreItem="nom_pai"
-              :consulta="form.pai_res"
+              :consulta="form.pai_res_name"
+              :index="3"
               :registros="paises"
-              :ordenCampo="1"
-              @getDepartamentos="getDepartamentos"
               placeholder="Seleccione una opción"
             />
     </div>
@@ -393,6 +390,9 @@ export default {
   data() {
     return {
       paises:"",
+      pai_exp_name:"",
+      cod_pai_name:"",
+      pai_res_name:"",
       URL_API:"http://localhost:8080/aplicaciones/api/public/",
       form: {
         nom_emp:"",
@@ -433,15 +433,29 @@ export default {
     };
   },
   methods: {
-    getPaises() {
-      if (this.paises == "") {
+    getPaises(item = null, index = null) {
+      if (item != null) {
+        switch (index) {
+          case 1:
+            this.form.pai_exp = item.cod_pai;
+            this.pai_exp_name= item.nom_pai
+            break;
+          case 2:
+            this.form.cod_pai = item.cod_pai;
+            this.cod_pai_name = item.nom_pai;
+            break;
+          case 3:
+          this.form.pai_res = item.cod_pai;
+          this.pai_res_name = item.nom_pai;
+            break;
+        }
+      }
         let self = this;
         axios
           .get(self.URL_API + "api/v1/paisesFormularioEmpleado")
           .then(function (result) {
             self.paises = result.data;
           });
-      }
     },
     submitForm() {
       const url = `http://localhost:8080/aplicaciones/api/public/api/v1/recepcionEmpleado`; // Corrige el uso de this
