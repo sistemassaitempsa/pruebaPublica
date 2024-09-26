@@ -226,14 +226,21 @@
             />
     </div>
     <div class="col">
-      <label class ="form-label" for="documento">Banco</label class ="form-label">
-      <input class="form-control" type="text" v-model="form.cod_ban" id="documento" required />
+      <SearchList
+              nombreCampo="Banco: *"
+              @selectBanco="selectBanco"
+              eventoCampo="selectBanco"
+              nombreItem="nom_ban"  
+              :consulta="banco_name"
+              :registros="consulta_banco"
+              placeholder="Seleccione una opción"
+            />
     </div>
     </div>
    
     <div class="row">
       <div class="col">
-      <label class ="form-label" for="documento">Numero de cuenta</label class ="form-label">
+      <label class ="form-label" for="documento">Número de cuenta</label class ="form-label">
       <input class="form-control" type="text" v-model="form.cta_ban" id="documento" required />
     </div>
     <div class="col">
@@ -243,13 +250,15 @@
     </div>
     <div class="row">
       <div class="col">
-      <label class ="form-label" for="documento">Nivel académico</label class ="form-label">
-      <input class="form-control"
-        type="text"
-        v-model="form.Niv_aca"
-        id="documento"
-        required
-      />
+        <SearchList
+              nombreCampo="Nivel académico: *"
+              @selectAcademico="selectAcademico"
+              eventoCampo="selectAcademico"
+              nombreItem="des_est"  
+              :consulta="niv_aca_name"
+              :registros="consulta_estudio"
+              placeholder="Seleccione una opción"
+            />
     </div>
     <div class="col">
       <label class ="form-label" for="documento">Identidad de género</label class ="form-label">
@@ -328,7 +337,7 @@
       />
     </div>
     <div class="col">
-      <label class ="form-label" for="documento">Numero de cedula</label class ="form-label">
+      <label class ="form-label" for="documento">Número de cedula</label class ="form-label">
       <input class="form-control"
         type="text"
         v-model="form.cedula_referencia1"
@@ -359,7 +368,7 @@
       />
     </div>
     <div class="col">
-      <label class ="form-label" for="documento">Numero de cedula</label class ="form-label">
+      <label class ="form-label" for="documento">Número de documento: *</label class ="form-label">
       <input class="form-control"
         type="text"
         v-model="form.cedula_referencia2"
@@ -414,6 +423,10 @@ export default {
     SearchList},
   data() {
     return {
+      niv_aca_name:"",
+      consulta_estudio:[],
+      banco_name:"",
+      consulta_banco:[],
       consulta_tipo_id:[],
       nom_tip_doc:"",
       dep_res_name:"",
@@ -468,6 +481,24 @@ export default {
     };
   },
   methods: {
+    selectAcademico(){
+      let self = this;
+        axios
+          .get(self.URL_API + "api/v1/nivelAcademicoFormEmpleado")
+          .then(function (result) {
+            self.consulta_estudio = result.data;
+            self.form.Niv_aca=item.tip_est
+          });
+    },
+    selectBanco(item){
+      let self = this;
+        axios
+          .get(self.URL_API + "api/v1/bancosFormularioEmpleado")
+          .then(function (result) {
+            self.consulta_banco = result.data;
+            self.form.cod_ban=item.cod_ban
+          });
+    },
     selectTipoId(item){
       let self = this;
         axios
