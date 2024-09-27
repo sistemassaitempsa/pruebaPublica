@@ -34,7 +34,7 @@
           id="basic-addon3"
           ><i class="bi bi-x"></i
         ></span>
-        <div class="invalid-feedback">
+        <div class="invalid-feedback errorCheck">
           {{ mensaje_error }}
         </div>
       </div>
@@ -290,5 +290,8 @@ label {
 
 span {
   height: 38px;
+}
+.errorCheck {
+  height: 2em;
 }
 </style>
