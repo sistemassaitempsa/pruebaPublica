@@ -646,6 +646,19 @@ export default {
     };
   },
   methods: {
+    handleSearch(cod_emp) {
+      let self = this;
+      axios
+        .get(self.URL_API + `api/v1/recepcionEmpleado/${cod_emp}`)
+        .then(function (result) {
+          self.llenarFormulario(result.data.data);
+        });
+    },
+    llenarFormulario(item) {
+      this.form.cod_emp = item.cod_emp;
+      this.form.ap1_emp = item.ap1_emp;
+      this.form.ap2_emp = item.ap2_emp;
+    },
     selectEtnia() {
       let self = this;
       axios
