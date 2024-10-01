@@ -1,6 +1,23 @@
 <template>
   <div class="container">
-    <h2>Registro de datos</h2>
+    <Loading :loading="loading" />
+    <div class="row">
+      <div class="col-2">
+        <img style="width: 80%" src="../assets/logo1.png" alt="" />
+      </div>
+
+      <div
+        class="col-2 versionamiento"
+        :style="'font-size:' + tamano_texto_version + 'rem'"
+      >
+        <div class="row">
+          <p>FR-GCA-04</p>
+          <p>Version 1</p>
+          <p>30-09-2024</p>
+        </div>
+      </div>
+    </div>
+    <h2>Registro de datos personales</h2>
 
     <div id="seccion">
       <form @submit.prevent="submitForm" class="row g-3">
@@ -18,7 +35,7 @@
               <input
                 class="form-control"
                 type="text"
-                v-model="form.nom_emp"
+                v-model="form.nom1_emp"
                 id="nombre"
                 required
               />
@@ -79,7 +96,7 @@
                   type="number"
                   v-model="form.cod_emp"
                   id="documento"
-                  :disabled="form.tip_ide == '' ? true : false"
+                  :disabled="form.tip_ide == '' || form.emp_id ? true : false"
                   required
                 />
                 <div class="invalid-feedback errorCheck">
@@ -149,7 +166,7 @@
                 @selectDepartamento="selectDepartamento"
                 eventoCampo="selectDepartamento"
                 nombreItem="nom_dep"
-                :consulta="cod_ciu_name"
+                :consulta="cod_dep_name"
                 :registros="consulta_departamentos[2]"
                 :index="2"
                 :disabled="!form.cod_pai"
@@ -210,24 +227,26 @@
               />
             </div>
             <div class="col">
-              <label class="form-label" for="fijo">Telefono fijo:</label>
+              <label class="form-label" for="fijo">Teléfono fijo:</label>
               <input
                 class="form-control"
                 type="text"
                 v-model="form.tel_res"
                 id="fijo"
+                maxlength="7"
               />
             </div>
           </div>
           <div class="row mb-4">
             <div class="col was-validated">
-              <label class="form-label" for="celular">Telefono celular:*</label>
+              <label class="form-label" for="celular">Teléfono celular:*</label>
               <input
                 class="form-control"
                 type="text"
                 v-model="form.tel_cel"
                 id="celular"
                 required
+                maxlength="10"
               />
             </div>
             <div class="col was-validated">
@@ -531,7 +550,8 @@
               <input
                 class="form-control"
                 type="date"
-                v-model="familiar.fec_nac"
+                @input="updateFecha($event, familiar)"
+                :value="formattedDate(familiar.fec_nac)"
                 id=""
               />
             </div>
@@ -547,14 +567,17 @@
 import axios from "axios";
 import SearchList from "./SearchList.vue";
 import SearchInput from "./SearchInput.vue";
+import Loading from "./Loading.vue";
 
 export default {
   components: {
     SearchList,
     SearchInput,
+    Loading,
   },
   data() {
     return {
+      loading: false,
       mensaje_error: "¡Este campo debe ser diligrenciado!",
       consulta_etnia: [],
       est_civ_name: "",
@@ -579,7 +602,8 @@ export default {
       ciu_res_name: "",
       URL_API: "http://localhost:8080/aplicaciones/api/public/",
       form: {
-        nom_emp: "",
+        emp_id: "",
+        nom1_emp: "",
         nom2_emp: "",
         cod_grupo: "",
         cod_emp: "",
@@ -612,6 +636,7 @@ export default {
         raza: "",
         est_civ: "",
         est_soc: "",
+        familiaresConsulta: [],
         referencias: [
           { num_ref: 1, tip_ref: "", parent: "", cel_ref: "", nom_ref: "" },
           { num_ref: 2, tip_ref: "", parent: "", cel_ref: "", nom_ref: "" },
@@ -654,12 +679,148 @@ export default {
           self.llenarFormulario(result.data.data);
         });
     },
-    llenarFormulario(item) {
-      this.form.cod_emp = item.cod_emp;
-      this.form.ap1_emp = item.ap1_emp;
-      this.form.ap2_emp = item.ap2_emp;
+    limpiarFromulario() {
+      this.consulta_etnia = [];
+      this.est_civ_name = "";
+      this.consulta_estado_civil = [];
+      this.niv_aca_name = "";
+      this.consulta_estudio = [];
+      this.banco_name = "";
+      this.consulta_banco = [];
+      this.consulta_tipo_id = [];
+      this.nom_tip_doc = "";
+      this.dep_res_name = "";
+      this.dep_exp_name = "";
+      this.cod_dep_name = "";
+      this.paises = [];
+      this.pai_exp_name = "";
+      this.cod_pai_name = "";
+      this.pai_res_name = "";
+      this.consulta_departamentos = {};
+      this.consulta_ciudades = {};
+      this.ciu_exp_name = "";
+      this.cod_ciu_name = "";
+      this.ciu_res_name = "";
+      this.form = {
+        emp_id: "",
+        nom1_emp: "",
+        nom2_emp: "",
+        cod_grupo: "",
+        cod_emp: "",
+        ap1_emp: "",
+        ap2_emp: "",
+        tip_ide: "",
+        pai_exp: "",
+        dpt_exp: "",
+        ciu_exp: "",
+        cod_pai: "",
+        cod_dep: "",
+        cod_ciu: "",
+        fec_nac: "",
+        dir_res: "",
+        fec_expdoc: "",
+        tel_res: "",
+        tel_cel: "",
+        e_mail: "",
+        pai_res: "",
+        dpt_res: "",
+        ciu_res: "",
+        cod_ban: "",
+        cta_ban: "",
+        barrio: "",
+        Niv_aca: "",
+        sex_emp: "",
+        per_car: "",
+        gru_san: "",
+        fac_rhh: "",
+        raza: "",
+        est_civ: "",
+        est_soc: "",
+        familiaresConsulta: [],
+        referencias: [
+          { num_ref: 1, tip_ref: "", parent: "", cel_ref: "", nom_ref: "" },
+          { num_ref: 2, tip_ref: "", parent: "", cel_ref: "", nom_ref: "" },
+        ],
+        familiares: [
+          {
+            ap1_fam: "",
+            ap2_fam: "",
+            nom_fam: "",
+            tip_fam: 2,
+            fec_nac: "",
+            ocu_fam: 7,
+          },
+          {
+            ap1_fam: "",
+            ap2_fam: "",
+            nom_fam: "",
+            tip_fam: 2,
+            fec_nac: "",
+            ocu_fam: 7,
+          },
+          {
+            ap1_fam: "",
+            ap2_fam: "",
+            nom_fam: "",
+            tip_fam: 2,
+            fec_nac: "",
+            ocu_fam: 7,
+          },
+        ],
+      };
     },
-    selectEtnia() {
+    llenarFormulario(item) {
+      /*this.form.cod_emp = item.cod_emp;
+        this.form.ap1_emp = item.ap1_emp;
+        this.form.ap2_emp = item.ap2_emp;*/
+      var self = this;
+      this.form = item;
+      this.form.cta_ban = Number(item.cta_ban);
+      this.form.cod_emp = Number(item.cod_emp);
+      this.form.fec_nac = this.formattedDate(item.fec_nac);
+      this.form.fec_expdoc = this.formattedDate(item.fec_expdoc);
+      this.nom_tip_doc = item.tipIde_nombre;
+      this.pai_exp_name = item.pais_exp_nombre;
+      this.cod_pai_name = item.pais_nac_nombre;
+      this.pai_res_name = item.pais_res_nombre;
+      this.dep_exp_name = item.dep_exp_nombre;
+      this.dep_res_name = item.dep_res_nombre;
+      this.cod_dep_name = item.dep_nac_nombre;
+      this.ciu_exp_name = item.ciudad_exp_nombre;
+      this.ciu_res_name = item.ciudad_res_nombre;
+      this.cod_ciu_name = item.ciudad_nac_nombre;
+      this.banco_name = item.nom_ban;
+      this.est_civ_name = item.des_est;
+      this.niv_aca_name = item.nivelAcademico_nombre;
+      this.form.gru_san = item.gru_san.trim();
+      const itemDptExp = { cod_pai: item.pai_exp };
+      const itemDptNac = { cod_pai: item.cod_pai };
+      const itemDptRes = { cod_pai: item.pai_res };
+      const itemCiuExp = { cod_pai: item.pai_exp, cod_dep: item.dpt_exp };
+      const itemCiuNac = { cod_pai: item.cod_pai, cod_dep: item.cod_dep };
+      const itemCiuRes = { cod_pai: item.pai_res, cod_dep: item.dpt_res };
+      this.getDepartamentos(itemDptExp, 1);
+      this.getDepartamentos(itemDptNac, 2);
+      this.getDepartamentos(itemDptRes, 3);
+      this.getCiudades(itemCiuExp, 1);
+      this.getCiudades(itemCiuNac, 2);
+      this.getCiudades(itemCiuRes, 3);
+      this.form.familiaresConsulta = [];
+      this.form.emp_id = item.cod_emp;
+      this.form.familiaresConsulta = JSON.parse(
+        JSON.stringify(item.familiares)
+      );
+      this.form.raza = item.etnia_nombre;
+    },
+
+    formattedDate(date) {
+      return date.split(" ")[0];
+    },
+    updateFecha(event, familiar) {
+      const fecha = event.target.value;
+      familiar.fec_nac = fecha;
+    },
+    selectEtnia(item) {
       let self = this;
       axios
         .get(self.URL_API + "api/v1/grupoEtnicoEmpleado")
@@ -746,7 +907,6 @@ export default {
     },
     getCiudades(item, index) {
       let self = this;
-      console.log(index);
       axios
         .get(
           self.URL_API +
@@ -761,7 +921,6 @@ export default {
     },
     getDepartamentos(item, index) {
       let self = this;
-      console.log(index);
       axios
         .get(
           self.URL_API +
@@ -799,19 +958,51 @@ export default {
           self.paises = result.data;
         });
     },
+    showAlertConfirm(mensaje, icono) {
+      this.$swal({
+        position: "top",
+        icon: icono,
+        title: mensaje,
+        showConfirmButton: false,
+        timer: icono == "error" ? 3000 : 1500,
+      });
+    },
     submitForm() {
-      const url = `http://localhost:8080/aplicaciones/api/public/api/v1/recepcionEmpleado`; // Corrige el uso de this
-      console.log(this.form);
-      axios
-        .post(url, this.form) // Corrige el acceso al objeto form
-        .then((response) => {
-          console.log(response.data);
-          alert("Formulario enviado con éxito");
-        })
-        .catch((error) => {
-          console.error("Error al enviar el formulario", error);
-          alert("Hubo un error al enviar el formulario");
-        });
+      this.loading = true;
+      const url = `http://localhost:8080/aplicaciones/api/public/api/v1/recepcionEmpleado`;
+      if (this.form.emp_id != "") {
+        try {
+          const url = `http://localhost:8080/aplicaciones/api/public/api/v1/recepcionEmpleado/${this.form.emp_id}`;
+          axios.put(url, this.form).then((result) => {
+            this.loading = false;
+            this.showAlertConfirm(result.data.message, result.data.status);
+            if (result.data.status == "success") {
+              this.limpiarFromulario();
+            }
+            return;
+          });
+        } catch (error) {
+          this.$showAlertConfirm("Error al actaulizar datos", "error");
+          return;
+        }
+      } else {
+        axios
+          .post(url, this.form)
+          .then((response) => {
+            this.showAlertConfirm(response.data.message, response.data.status);
+            this.loading = false;
+            if (response.data.status == "success") {
+              this.limpiarFromulario();
+            }
+            return;
+          })
+          .catch((error) => {
+            this.showAlertConfirm(
+              "Hubo un error al enviar el formulario",
+              "error"
+            )();
+          });
+      }
     },
   },
 };
