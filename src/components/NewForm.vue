@@ -7,7 +7,7 @@
       </div>
 
       <div
-        class="col-2 versionamiento"
+        class="col-4 versionamiento"
         :style="'font-size:' + tamano_texto_version + 'rem'"
       >
         <div class="row">
@@ -188,7 +188,7 @@
             </div>
           </div>
           <div class="row mb-4">
-            <div class="col-12 was-validated col-lg-12">
+            <div class="col-12 was-validated col-lg-6">
               <label class="form-label" for="fecha_nac"
                 >Fecha de nacimiento:*</label
               >
