@@ -6,10 +6,7 @@
         <img style="width: 80%" src="../assets/logo1.png" alt="" />
       </div>
 
-      <div
-        class="col-4 versionamiento"
-        :style="'font-size:' + tamano_texto_version + 'rem'"
-      >
+      <div class="col-4 versionamiento" :style="'font-size:' + 'rem'">
         <div class="row">
           <p>FR-GCA-04</p>
           <p>Version 1</p>
@@ -22,7 +19,9 @@
     <div id="seccion">
       <form @submit.prevent="submitForm" class="row g-3">
         <div class="row">
-          <div class="col"><h5>1. Información personal</h5></div>
+          <div class="col">
+            <h5>1. Información personal</h5>
+          </div>
           <div class="col">
             <SearchInput @search="handleSearch" />
           </div>
@@ -32,73 +31,34 @@
           <div class="row mb-4">
             <div class="col-12 was-validated col-lg-6">
               <label class="form-label" for="nombre">Primer nombre:*</label>
-              <input
-                class="form-control"
-                type="text"
-                v-model="form.nom1_emp"
-                id="nombre"
-                required
-              />
+              <input class="form-control" type="text" v-model="form.nom1_emp" id="nombre" required />
             </div>
             <div class="col-12 col-lg-6">
               <label class="form-label" for="nombre2">Segundo nombre:</label>
-              <input
-                class="form-control"
-                type="text"
-                v-model="form.nom2_emp"
-                id="nombre2"
-              />
+              <input class="form-control" type="text" v-model="form.nom2_emp" id="nombre2" />
             </div>
           </div>
           <div class="row mb-4">
             <div class="col-12 was-validated col-lg-6">
               <label class="form-label" for="apellido">Primer apellido:*</label>
-              <input
-                class="form-control"
-                type="text"
-                v-model="form.ap1_emp"
-                id="apellido"
-                required
-              />
+              <input class="form-control" type="text" v-model="form.ap1_emp" id="apellido" required />
             </div>
             <div class="col-12 was-validated col-lg-6">
-              <label class="form-label" for="apellido2"
-                >Segundo Apellido:*</label
-              >
-              <input
-                class="form-control"
-                type="text"
-                v-model="form.ap2_emp"
-                id="apellido2"
-                required
-              />
+              <label class="form-label" for="apellido2">Segundo Apellido:*</label>
+              <input class="form-control" type="text" v-model="form.ap2_emp" id="apellido2" required />
             </div>
           </div>
           <div class="row">
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Tipo de documento:*"
-                @selectTipoId="selectTipoId"
-                eventoCampo="selectTipoId"
-                nombreItem="des_tip"
-                :consulta="nom_tip_doc"
-                :registros="consulta_tipo_id"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Tipo de documento:*" @selectTipoId="selectTipoId" eventoCampo="selectTipoId"
+                nombreItem="des_tip" :consulta="nom_tip_doc" :registros="consulta_tipo_id"
+                placeholder="Seleccione una opción" />
             </div>
-            <div class="col-12 mt-4 was-validated p-2 col-lg-6">
+            <div class="col-12 mt-2 was-validated p-2 col-lg-6">
               <div>
-                <label class="form-label" for="documento"
-                  >Número de documento:*</label
-                >
-                <input
-                  class="form-control"
-                  type="number"
-                  v-model="form.cod_emp"
-                  id="documento"
-                  :disabled="form.tip_ide == '' || form.emp_id ? true : false"
-                  required
-                />
+                <label class="form-label" for="documento">Número de documento:*</label>
+                <input class="form-control" type="number" v-model="form.cod_emp" id="documento"
+                  :disabled="form.tip_ide == '' || form.emp_id ? true : false" required />
                 <div class="invalid-feedback errorCheck">
                   {{ "" }}
                 </div>
@@ -107,261 +67,118 @@
           </div>
           <div class="row">
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Pais de expedicion:*"
-                @getPaises="getPaises"
-                eventoCampo="getPaises"
-                nombreItem="nom_pai"
-                :consulta="pai_exp_name"
-                :registros="paises"
-                :index="1"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Pais de expedicion:*" @getPaises="getPaises" eventoCampo="getPaises"
+                nombreItem="nom_pai" :consulta="pai_exp_name" :registros="paises" :index="1"
+                placeholder="Seleccione una opción" />
             </div>
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Departamento de expedicion:*"
-                @selectDepartamento="selectDepartamento"
-                eventoCampo="selectDepartamento"
-                nombreItem="nom_dep"
-                :consulta="dep_exp_name"
-                :registros="consulta_departamentos[1]"
-                :index="1"
-                :disabled="!form.pai_exp"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Departamento de expedicion:*" @selectDepartamento="selectDepartamento"
+                eventoCampo="selectDepartamento" nombreItem="nom_dep" :consulta="dep_exp_name"
+                :registros="consulta_departamentos[1]" :index="1" :disabled="!form.pai_exp"
+                placeholder="Seleccione una opción" />
             </div>
           </div>
           <div class="row">
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Ciudad de expedicion:*"
-                @selectCiudad="selectCiudad"
-                eventoCampo="selectCiudad"
-                nombreItem="nom_ciu"
-                :consulta="ciu_exp_name"
-                :registros="consulta_ciudades[1]"
-                :index="1"
-                :disabled="!form.dpt_exp"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Ciudad de expedicion:*" @selectCiudad="selectCiudad" eventoCampo="selectCiudad"
+                nombreItem="nom_ciu" :consulta="ciu_exp_name" :registros="consulta_ciudades[1]" :index="1"
+                :disabled="!form.dpt_exp" placeholder="Seleccione una opción" />
             </div>
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Pais de nacimiento:*"
-                @getPaises="getPaises"
-                eventoCampo="getPaises"
-                nombreItem="nom_pai"
-                :consulta="cod_pai_name"
-                :registros="paises"
-                :index="2"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Pais de nacimiento:*" @getPaises="getPaises" eventoCampo="getPaises"
+                nombreItem="nom_pai" :consulta="cod_pai_name" :registros="paises" :index="2"
+                placeholder="Seleccione una opción" />
             </div>
           </div>
           <div class="row">
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Departamento de nacimiento:*"
-                @selectDepartamento="selectDepartamento"
-                eventoCampo="selectDepartamento"
-                nombreItem="nom_dep"
-                :consulta="cod_dep_name"
-                :registros="consulta_departamentos[2]"
-                :index="2"
-                :disabled="!form.cod_pai"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Departamento de nacimiento:*" @selectDepartamento="selectDepartamento"
+                eventoCampo="selectDepartamento" nombreItem="nom_dep" :consulta="cod_dep_name"
+                :registros="consulta_departamentos[2]" :index="2" :disabled="!form.cod_pai"
+                placeholder="Seleccione una opción" />
             </div>
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Ciudad de nacimiento:*"
-                @selectCiudad="selectCiudad"
-                eventoCampo="selectCiudad"
-                nombreItem="nom_ciu"
-                :consulta="cod_ciu_name"
-                :registros="consulta_ciudades[2]"
-                :index="2"
-                :disabled="!form.cod_dep"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Ciudad de nacimiento:*" @selectCiudad="selectCiudad" eventoCampo="selectCiudad"
+                nombreItem="nom_ciu" :consulta="cod_ciu_name" :registros="consulta_ciudades[2]" :index="2"
+                :disabled="!form.cod_dep" placeholder="Seleccione una opción" />
             </div>
           </div>
           <div class="row mb-4">
             <div class="col-12 was-validated col-lg-6">
-              <label class="form-label" for="fecha_nac"
-                >Fecha de nacimiento:*</label
-              >
-              <input
-                class="form-control"
-                type="date"
-                v-model="form.fec_nac"
-                id="fecha_nac"
-                required
-              />
+              <label class="form-label" for="fecha_nac">Fecha de nacimiento:*</label>
+              <input class="form-control" type="date" v-model="form.fec_nac" id="fecha_nac" required />
             </div>
             <div class="col-12 was-validated col-lg-6">
-              <label class="form-label" for="direccion"
-                >Direccion residencia:*</label
-              >
-              <input
-                class="form-control"
-                type="text"
-                v-model="form.dir_res"
-                id="direccion"
-                required
-              />
+              <label class="form-label" for="direccion">Direccion residencia:*</label>
+              <input class="form-control" type="text" v-model="form.dir_res" id="direccion" required />
             </div>
           </div>
           <div class="row mb-4">
             <div class="col-12 was-validated col-lg-6">
-              <label class="form-label" for="fecha_exp"
-                >Fecha expedicion:*</label
-              >
-              <input
-                class="form-control"
-                type="date"
-                v-model="form.fec_expdoc"
-                id="fecha_exp"
-                required
-              />
+              <label class="form-label" for="fecha_exp">Fecha expedicion:*</label>
+              <input class="form-control" type="date" v-model="form.fec_expdoc" id="fecha_exp" required />
             </div>
             <div class="col-12 col-lg-6">
               <label class="form-label" for="fijo">Teléfono fijo:</label>
-              <input
-                class="form-control"
-                type="text"
-                v-model="form.tel_res"
-                id="fijo"
-                maxlength="7"
-              />
+              <input class="form-control" type="text" v-model="form.tel_res" id="fijo" maxlength="7" />
             </div>
           </div>
           <div class="row mb-4">
             <div class="col-12 was-validated col-lg-6">
               <label class="form-label" for="celular">Teléfono celular:*</label>
-              <input
-                class="form-control"
-                type="text"
-                v-model="form.tel_cel"
-                id="celular"
-                required
-                maxlength="10"
-              />
+              <input class="form-control" type="text" v-model="form.tel_cel" id="celular" required maxlength="10" />
             </div>
             <div class="col-12 was-validated col-lg-6">
               <label class="form-label" for="email">Correo electronico:*</label>
-              <input
-                class="form-control"
-                type="text"
-                v-model="form.e_mail"
-                id="email"
-                required
-              />
+              <input class="form-control" type="text" v-model="form.e_mail" id="email" required />
             </div>
           </div>
           <div class="row">
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Pais de residencia:*"
-                @getPaises="getPaises"
-                eventoCampo="getPaises"
-                nombreItem="nom_pai"
-                :consulta="pai_res_name"
-                :index="3"
-                :registros="paises"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Pais de residencia:*" @getPaises="getPaises" eventoCampo="getPaises"
+                nombreItem="nom_pai" :consulta="pai_res_name" :index="3" :registros="paises"
+                placeholder="Seleccione una opción" />
             </div>
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Departamento de residencia:*"
-                @selectDepartamento="selectDepartamento"
-                eventoCampo="selectDepartamento"
-                nombreItem="nom_dep"
-                :consulta="dep_res_name"
-                :registros="consulta_departamentos[3]"
-                :index="3"
-                :disabled="!form.pai_res"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Departamento de residencia:*" @selectDepartamento="selectDepartamento"
+                eventoCampo="selectDepartamento" nombreItem="nom_dep" :consulta="dep_res_name"
+                :registros="consulta_departamentos[3]" :index="3" :disabled="!form.pai_res"
+                placeholder="Seleccione una opción" />
             </div>
           </div>
           <div class="row">
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Ciudad de residencia:*"
-                @selectCiudad="selectCiudad"
-                eventoCampo="selectCiudad"
-                nombreItem="nom_ciu"
-                :consulta="ciu_res_name"
-                :registros="consulta_ciudades[3]"
-                :index="3"
-                :disabled="!form.dpt_res"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Ciudad de residencia:*" @selectCiudad="selectCiudad" eventoCampo="selectCiudad"
+                nombreItem="nom_ciu" :consulta="ciu_res_name" :registros="consulta_ciudades[3]" :index="3"
+                :disabled="!form.dpt_res" placeholder="Seleccione una opción" />
             </div>
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Banco:*"
-                @selectBanco="selectBanco"
-                eventoCampo="selectBanco"
-                nombreItem="nom_ban"
-                :consulta="banco_name"
-                :registros="consulta_banco"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Banco:*" @selectBanco="selectBanco" eventoCampo="selectBanco"
+                nombreItem="nom_ban" :consulta="banco_name" :registros="consulta_banco"
+                placeholder="Seleccione una opción" />
             </div>
           </div>
 
           <div class="row mb-4">
             <div class="col-12 col-lg-6">
               <label class="form-label" for="cuenta">Número de cuenta:</label>
-              <input
-                class="form-control"
-                type="number"
-                v-model="form.cta_ban"
-                id="cuenta"
-                :disabled="
-                  form.cod_ban == '' || form.cod_ban == 0 ? true : false
-                "
-                required
-              />
+              <input class="form-control" type="number" v-model="form.cta_ban" id="cuenta" :disabled="form.cod_ban == '' || form.cod_ban == 0 ? true : false
+                " required />
             </div>
             <div class="col-12 was-validated col-lg-6">
               <label class="form-label" for="barrio">Barrio:*</label>
-              <input
-                class="form-control"
-                type="text"
-                v-model="form.barrio"
-                id="barrio"
-                required
-              />
+              <input class="form-control" type="text" v-model="form.barrio" id="barrio" required />
             </div>
           </div>
           <div class="row">
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Nivel académico:*"
-                @selectAcademico="selectAcademico"
-                eventoCampo="selectAcademico"
-                nombreItem="des_est"
-                :consulta="niv_aca_name"
-                :registros="consulta_estudio"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Nivel académico:*" @selectAcademico="selectAcademico"
+                eventoCampo="selectAcademico" nombreItem="des_est" :consulta="niv_aca_name"
+                :registros="consulta_estudio" placeholder="Seleccione una opción" />
             </div>
-            <div class="col-12 mt-4 was-validated p-2 col-lg-6">
-              <label class="form-label" for="genero"
-                >Identidad de género:*</label
-              >
-              <select
-                class="form-select"
-                name=""
-                id="genero"
-                v-model="form.sex_emp"
-                required
-              >
+            <div class="col-12 mt-2 was-validated p-2 col-lg-6">
+              <label class="form-label" for="genero">Identidad de género:*</label>
+              <select class="form-select" name="" id="genero" v-model="form.sex_emp" required>
                 <option value="1">Mujer</option>
                 <option value="2">Hombre</option>
                 <option value="0">Otro</option>
@@ -373,26 +190,12 @@
           </div>
           <div class="row mb-4">
             <div class="col-12 was-validated col-lg-6">
-              <label class="form-label" for="personas_cargo"
-                >Personas a cargo(cantidad):*</label
-              >
-              <input
-                class="form-control"
-                type="text"
-                v-model="form.per_car"
-                id="personas_cargo"
-                required
-              />
+              <label class="form-label" for="personas_cargo">Personas a cargo(cantidad):*</label>
+              <input class="form-control" type="text" v-model="form.per_car" id="personas_cargo" required />
             </div>
             <div class="col-12 was-validated col-lg-6">
               <label class="form-label" for="sangre">Grupo sanguíneo:*</label>
-              <select
-                class="form-select"
-                name=""
-                id="sangre"
-                v-model="form.gru_san"
-                required
-              >
+              <select class="form-select" name="" id="sangre" v-model="form.gru_san" required>
                 <option value="A">A</option>
                 <option value="AB">AB</option>
                 <option value="B">B</option>
@@ -401,15 +204,9 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 mt-4 was-validated p-2 col-lg-6">
+            <div class="col-12 mt-2 was-validated p-2 col-lg-6">
               <label class="form-label" for="rh">Factor RH:*</label>
-              <select
-                name=""
-                id="rh"
-                class="form-select"
-                v-model="form.fac_rhh"
-                required
-              >
+              <select name="" id="rh" class="form-select" v-model="form.fac_rhh" required>
                 <option value="+">+</option>
                 <option value="-">-</option>
               </select>
@@ -418,40 +215,20 @@
               </div>
             </div>
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Estado civil:*"
-                @selectEstadoCivil="selectEstadoCivil"
-                eventoCampo="selectEstadoCivil"
-                nombreItem="des_est"
-                :consulta="est_civ_name"
-                :registros="consulta_estado_civil"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Estado civil:*" @selectEstadoCivil="selectEstadoCivil"
+                eventoCampo="selectEstadoCivil" nombreItem="des_est" :consulta="est_civ_name"
+                :registros="consulta_estado_civil" placeholder="Seleccione una opción" />
             </div>
           </div>
           <div class="row">
             <div class="col-12 col-lg-6">
-              <SearchList
-                nombreCampo="Grupo étnico:*"
-                @selectEtnia="selectEtnia"
-                eventoCampo="selectEtnia"
-                nombreItem="descripcion"
-                :consulta="form.raza"
-                :registros="consulta_etnia"
-                placeholder="Seleccione una opción"
-              />
+              <SearchList nombreCampo="Grupo étnico:*" @selectEtnia="selectEtnia" eventoCampo="selectEtnia"
+                nombreItem="descripcion" :consulta="form.raza" :registros="consulta_etnia"
+                placeholder="Seleccione una opción" />
             </div>
-            <div class="col-12 col-lg-6 mt-4 was-validated p-2">
-              <label class="form-label" for="estrato"
-                >Estrato socioeconomico:*</label
-              >
-              <select
-                name=""
-                id="estrato"
-                v-model="form.est_soc"
-                required
-                class="form-select"
-              >
+            <div class="col-12 col-lg-6 mt-2 was-validated p-2">
+              <label class="form-label" for="estrato">Estrato socioeconomico:*</label>
+              <select name="" id="estrato" v-model="form.est_soc" required class="form-select">
                 <option :value="n" :key="n" v-for="n in 6">{{ n }}</option>
               </select>
               <div class="invalid-feedback errorCheck">
@@ -469,54 +246,24 @@
               <h6>{{ "Referencia" + " " + (index + 1) }}</h6>
               <div class="row">
                 <div class="col-12 col-lg-3">
-                  <label class="form-label" for="tipo_ref"
-                    >Tipo de referencia:</label
-                  >
-                  <select
-                    name=""
-                    id="tipo_ref"
-                    v-model="referencia.tip_ref"
-                    required
-                    class="form-select"
-                  >
+                  <label class="form-label" for="tipo_ref">Tipo de referencia:</label>
+                  <select name="" id="tipo_ref" v-model="referencia.tip_ref" required class="form-select">
                     <option value="1">Personal</option>
                     <option value="2">Familiar</option>
                   </select>
                 </div>
                 <div class="col-12 col-lg-3">
                   <label class="form-label" for="parentesco">Parentesco:</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    v-model="referencia.parent"
-                    id="parentesco"
-                    required
-                  />
+                  <input class="form-control" type="text" v-model="referencia.parent" id="parentesco" required />
                 </div>
 
                 <div class="col-12 col-lg-3">
-                  <label class="form-label" for="fullName"
-                    >Nombre completo:</label
-                  >
-                  <input
-                    class="form-control"
-                    type="text"
-                    v-model="referencia.nom_ref"
-                    id="fullName"
-                    required
-                  />
+                  <label class="form-label" for="fullName">Nombre completo:</label>
+                  <input class="form-control" type="text" v-model="referencia.nom_ref" id="fullName" required />
                 </div>
                 <div class="col-12 col-lg-3">
-                  <label class="form-label" for="celular_ref"
-                    >Número celular:</label
-                  >
-                  <input
-                    class="form-control"
-                    type="text"
-                    v-model="referencia.cel_ref"
-                    id="celular_ref"
-                    required
-                  />
+                  <label class="form-label" for="celular_ref">Número celular:</label>
+                  <input class="form-control" type="text" v-model="referencia.cel_ref" id="celular_ref" required />
                 </div>
               </div>
             </div>
@@ -532,39 +279,20 @@
               <div class="row">
                 <div class="col-12 col-lg-3">
                   <label class="form-label" for="">Primer apellido:</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    v-model="familiar.ap1_fam"
-                  />
+                  <input class="form-control" type="text" v-model="familiar.ap1_fam" />
                 </div>
                 <div class="col-12 col-lg-3">
                   <label class="form-label" for="">Segundo apellido:</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    v-model="familiar.ap2_fam"
-                    id=""
-                  />
+                  <input class="form-control" type="text" v-model="familiar.ap2_fam" id="" />
                 </div>
                 <div class="col-12 col-lg-3">
                   <label class="form-label" for="">Nombre:</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    v-model="familiar.nom_fam"
-                    id=""
-                  />
+                  <input class="form-control" type="text" v-model="familiar.nom_fam" id="" />
                 </div>
                 <div class="col-12 col-lg-3">
                   <label class="form-label" for="">Fecha de nacimiento:</label>
-                  <input
-                    class="form-control"
-                    type="date"
-                    @input="updateFecha($event, familiar)"
-                    :value="formattedDate(familiar.fec_nac)"
-                    id=""
-                  />
+                  <input class="form-control" type="date" @input="updateFecha($event, familiar)"
+                    :value="formattedDate(familiar.fec_nac)" id="" />
                 </div>
               </div>
             </div>
@@ -1017,10 +745,10 @@ export default {
       axios
         .get(
           self.URL_API +
-            "api/v1/ciudadesFormularioEmpleado/" +
-            item.cod_pai +
-            "/" +
-            item.cod_dep
+          "api/v1/ciudadesFormularioEmpleado/" +
+          item.cod_pai +
+          "/" +
+          item.cod_dep
         )
         .then(function (result) {
           self.consulta_ciudades[index] = result.data;
@@ -1031,8 +759,8 @@ export default {
       axios
         .get(
           self.URL_API +
-            "api/v1/departamentosFormularioEmpleado/" +
-            item.cod_pai
+          "api/v1/departamentosFormularioEmpleado/" +
+          item.cod_pai
         )
         .then(function (result) {
           self.consulta_departamentos[index] = result.data;
@@ -1074,44 +802,63 @@ export default {
         timer: icono == "error" ? 3000 : 1500,
       });
     },
+    showAlertQuestion(cedula) {
+      return this.$swal({
+        position: "top",
+        title: `¿Está seguro que quiere registrar los datos con cédula ${cedula}`,
+        icon: 'warning',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Guardar",
+        denyButtonText: `No guardar`
+      })
+    },
     submitForm() {
-      this.loading = true;
-      /*  const url = `https://debidadiligencia.saitempsa.com:8484/aplicaciones/api/public/api/v1/recepcionEmpleado`; */
-      const url = `http://localhost:8080/aplicaciones/api/public/api/v1/recepcionEmpleado`;
-      if (this.form.emp_id != "") {
-        try {
-          /*  const url = `https://debidadiligencia.saitempsa.com:8484/aplicaciones/api/public/api/v1/recepcionEmpleado/${this.form.emp_id}`; */
-          const url = `http://localhost:8080/aplicaciones/api/public/api/v1/recepcionEmpleado/${this.form.emp_id}`;
-          axios.put(url, this.form).then((result) => {
-            this.loading = false;
-            this.showAlertConfirm(result.data.message, result.data.status);
-            if (result.data.status == "success") {
-              this.limpiarFromulario();
+      this.showAlertQuestion(this.form.cod_emp).then((result) => {
+        if (result.isConfirmed) {
+          this.loading = true;
+          /*  const url = `https://debidadiligencia.saitempsa.com:8484/aplicaciones/api/public/api/v1/recepcionEmpleado`; */
+          const url = `http://localhost:8080/aplicaciones/api/public/api/v1/recepcionEmpleado`;
+          if (this.form.emp_id != "") {
+            try {
+              /*  const url = `https://debidadiligencia.saitempsa.com:8484/aplicaciones/api/public/api/v1/recepcionEmpleado/${this.form.emp_id}`; */
+              const url = `http://localhost:8080/aplicaciones/api/public/api/v1/recepcionEmpleado/${this.form.emp_id}`;
+              axios.put(url, this.form).then((result) => {
+                this.loading = false;
+                this.showAlertConfirm(result.data.message, result.data.status);
+                if (result.data.status == "success") {
+                  this.limpiarFromulario();
+                }
+                return;
+              });
+            } catch (error) {
+              this.$showAlertConfirm("Error al actaulizar datos", "error");
+              return;
             }
-            return;
-          });
-        } catch (error) {
-          this.$showAlertConfirm("Error al actaulizar datos", "error");
-          return;
+          } else {
+            axios
+              .post(url, this.form)
+              .then((response) => {
+                this.showAlertConfirm(response.data.message, response.data.status);
+                this.loading = false;
+                if (response.data.status == "success") {
+                  this.limpiarFromulario();
+                }
+                return;
+              })
+              .catch((error) => {
+                this.showAlertConfirm(
+                  "Hubo un error al enviar el formulario",
+                  "error"
+                )();
+              });
+          }
         }
-      } else {
-        axios
-          .post(url, this.form)
-          .then((response) => {
-            this.showAlertConfirm(response.data.message, response.data.status);
-            this.loading = false;
-            if (response.data.status == "success") {
-              this.limpiarFromulario();
-            }
-            return;
-          })
-          .catch((error) => {
-            this.showAlertConfirm(
-              "Hubo un error al enviar el formulario",
-              "error"
-            )();
-          });
-      }
+        else if (result.isDenied) {
+          this.$swal.fire("Los cambios no fueron registrados", "", "info");
+        }
+      });
+
     },
   },
 };
@@ -1121,12 +868,15 @@ export default {
 h2 {
   text-align: center;
 }
+
 .col {
   margin-top: 1em;
 }
+
 .form-group {
   margin-bottom: 15px;
 }
+
 #seccion {
   border: solid #d5dbdb 0.5px;
   padding: 30px;
@@ -1135,6 +885,7 @@ h2 {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
     rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
+
 button {
   width: 100%;
   padding: 10px;
@@ -1149,28 +900,35 @@ button {
 button:hover {
   background-color: #015734;
 }
+
 .info_container {
   border: solid rgba(214, 214, 214, 0.558) 1px;
   border-radius: 5px;
   padding: 2em;
 }
+
 h5 {
   color: #006b3f;
 }
+
 .errorCheck {
   height: 2em;
 }
+
 .btn_outline {
   background-color: #ffffff;
   border: #006b3f solid 2px;
   transition: all 0.5s ease-out;
 }
+
 .color_green {
   color: #006b3f;
 }
+
 .btn_outline:hover .color_green {
   color: #ffffff;
 }
+
 .btn_outline::after {
   content: "Agregar hijo";
   position: absolute;
@@ -1188,6 +946,7 @@ h5 {
   border-radius: 5px;
   transform: scaleX(0%) translateY(-50%);
 }
+
 .btn_outline:hover::after {
   opacity: 1;
   transform: scaleX(100%) translateY(-50%);
