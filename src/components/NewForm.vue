@@ -837,21 +837,26 @@ export default {
             }
           } else {
             axios
-              .post(url, this.form)
-              .then((response) => {
-                this.showAlertConfirm(response.data.message, response.data.status);
-                this.loading = false;
-                if (response.data.status == "success") {
-                  this.limpiarFromulario();
+              .get(this.URL_API + `api/v1/recepcionEmpleado/${this.form.cod_emp}`)
+              .then((result) => {
+                if (result.data.data.cod_emp) {
+                  this.showAlertConfirm("Ya está registrado con este número de cédula", "error")
+                  this.loading = false;
+                  return
+                } else {
+                  axios
+                    .post(url, this.form)
+                    .then((response) => {
+                      this.showAlertConfirm(response.data.message, response.data.status);
+                      this.loading = false;
+                      if (response.data.status == "success") {
+                        this.limpiarFromulario();
+                      }
+                      return;
+                    })
                 }
-                return;
               })
-              .catch((error) => {
-                this.showAlertConfirm(
-                  "Hubo un error al enviar el formulario",
-                  "error"
-                )();
-              });
+
           }
         }
         else if (result.isDenied) {
